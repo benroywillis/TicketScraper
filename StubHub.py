@@ -49,19 +49,34 @@ ticket_row_elems     = driver.find_elements_by_css_selector(".rowcell")
 ticket_price_elems = driver.find_elements_by_css_selector(".AdvisoryPriceDisplay__content")
 ticket_num__elems    = driver.find_elements_by_css_selector(".RoyalTicketListPanel__SecondaryInfo")
 
-# Example 
-[print(elem.text) for elem in ticket_price_elems]
-[print(elem.text) for elem in ticket_section_elems]
-[print(elem.text) for elem in ticket_num__elems]
-
 # This transformation is heavy
 price_list = []
 for item in ticket_price_elems:
 	if len(item.text):
-		price_list.append(item.text)
-#row_list        = [    row.text for     row in ticket_row_elems]
-section_list    = [section.text for section in ticket_section_elems]
-ticket_num_list = [    num.text for     num in ticket_num__elems]
+		itemStr = item.text
+		while( "\n" in itemStr ):
+			itemStr = itemStr.replace("\n", " ")
+		price_list.append(itemStr)
+section_list = []
+for item in ticket_section_elems:
+	if len(item.text):
+		itemStr = item.text
+		while( "\n" in itemStr ):
+			itemStr = itemStr.replace("\n", " ")
+		section_list.append(itemStr)
+ticket_num_list = []
+for item in ticket_num__elems:
+	if len(item.text):
+		itemStr = item.text
+		while( "\n" in itemStr ):
+			itemStr = itemStr.replace("\n"," ")
+		ticket_num_list.append(itemStr)
+		
+# Example 
+[print(elem) for elem in price_list]
+[print(elem) for elem in section_list]
+[print(elem) for elem in ticket_num_list]
+
 print(len(price_list))
 print(len(section_list))
 print(len(ticket_num_list))
@@ -73,5 +88,5 @@ mydf = pd.DataFrame(
     })
 
 print(mydf)
-mydf.to_csv( path_or_buf= args.page+"_"+datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S")+".csv", index=False)
+mydf.to_csv( path_or_buf= "Data/"+args.page+"_"+datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S")+".csv", index=False)
 driver.close()
