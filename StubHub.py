@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -21,15 +22,22 @@ def argument_parse():
 	arg_parser.add_argument("-l", "--link", default="https://www.google.com/", help="Specify link to jump to")
 	# weblink page identifier - used to name the output .csv
 	arg_parser.add_argument("-p", "--page", default="Scrape", help="Unique name used to identify the output data file")
+	# run in "headless" mode, meaning the browser gui won't appear
+	arg_parser.add_argument("-hl", "--headless", action="store_true", help="Run in \"headless\" mode, meaning the browser gui won't appear")
 	args = arg_parser.parse_args()
 	return args
 
 # read args
 args = argument_parse()
 
+# options to pass to the chrome driver
+chrome_options = Options()
+if args.headless:
+	chrome_options.add_argument("--headless")
+
 # initialize driver
-driver = webdriver.Chrome()
-driver.wait = WebDriverWait(driver, 1)
+driver = webdriver.Chrome(options=chrome_options)
+driver.wait = WebDriverWait(driver, 5)
 driver.get(args.link)
 
 # Scrolling to 5 * i th elements for every 1 second -- to display them all
