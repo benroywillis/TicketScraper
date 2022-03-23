@@ -37,6 +37,7 @@ if args.headless:
 
 # initialize driver
 driver = webdriver.Chrome(options=chrome_options)
+driver.implicitly_wait(10)
 driver.wait = WebDriverWait(driver, 5)
 driver.get(args.link)
 
