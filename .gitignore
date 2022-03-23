@@ -1,2 +1,4 @@
 # open vi sessions
 *.swp
+# temporary python files
+__pycache__
